@@ -1,0 +1,190 @@
+#!/bin/bash
+###########- COLOR CODE -##############
+colornow=$(cat /etc/dvs/theme/color.conf)
+NC="\e[0m"
+p="\e[0m"
+r="\033[0;31m"
+y="\033[33m"
+gb="\e[92;1m"
+RED="\033[0;31m"
+COLOR1="$(cat /etc/dvs/theme/$colornow | grep -w "TEXT" | cut -d: -f2|sed 's/ //g')"
+COLBG1="$(cat /etc/dvs/theme/$colornow | grep -w "BG" | cut -d: -f2|sed 's/ //g')"
+WH='\033[1;37m'
+###########- END COLOR CODE -##########
+g=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 2)
+gb=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 3)
+b=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 4)
+p=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 5)
+r=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 6)
+y=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 7)
+###### IZIN SC 
+ipsaya=$(wget -qO- ipinfo.io/ip)
+data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+date_list=$(date +"%Y-%m-%d" -d "$data_server")
+data_ip="https://raw.githubusercontent.com/DevilsTunnels/permission/main/izin"
+checking_sc() {
+  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
+  if [[ $date_list < $useexp ]]; then
+    echo -ne
+  else
+echo -e "${r} ╔═════════════════════════════════════════════════╗${p}"
+echo -e "${r}═║                ${b}PERMISSION DENIED ${p}               ${r}║═${p}"
+echo -e "${r}═║${y}┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┌─┐┬─┐┌─┐┌┬┐┬┬ ┬┌┬┐${p}${r}║═${p}"
+echo -e "${r}═║${y}├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   ├─┘├┬┘├┤ │││││ ││││${p}${r}║═${p}"
+echo -e "${r}═║${y}┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴  ┴└─└─┘┴ ┴┴└─┘┴ ┴${p}${r}║═${p}"
+echo -e "${r}═║${gb}  POWERRED DEVILSTUNNEL | TELEGRAM: @Rizyul04    ${p}${r}║═${p}"
+echo -e "${r} ╚═════════════════════════════════════════════════╝${p}"
+echo -e "                 ${y}INFORMASI LISENSI${p}"                 
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 IP ${r}$ipsaya${p}"
+echo -e "                 ${y}PERIZINAN DITOLAK${p}"
+echo -e "    ${y} SCRIPT TIDAK BISA DI GUNAKAN DI VPS ANDA${p}"
+echo -e "    ${y} SILAHKAN LAKUKAN REGISTRASI TERLEBIH DAHULU${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 ${gb}KONTAK REGISTRASI${p}"
+echo -e "   ${gb}|Telegram: @Rizyul04   | WhatsApp: 085163567549|${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+    exit
+  fi
+}
+checking_sc
+clear
+UPDATE="https://raw.githubusercontent.com/DevilsTunnels/dvs/main"
+UDPX="https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2"
+#Download/Upload today
+dtoday="$(vnstat -i eth0 | grep "today" | awk '{print $2" "substr ($3, 1, 1)}')"
+utoday="$(vnstat -i eth0 | grep "today" | awk '{print $5" "substr ($6, 1, 1)}')"
+ttoday="$(vnstat -i eth0 | grep "today" | awk '{print $8" "substr ($9, 1, 1)}')"
+#Download/Upload yesterday
+dyest="$(vnstat -i eth0 | grep "yesterday" | awk '{print $2" "substr ($3, 1, 1)}')"
+uyest="$(vnstat -i eth0 | grep "yesterday" | awk '{print $5" "substr ($6, 1, 1)}')"
+tyest="$(vnstat -i eth0 | grep "yesterday" | awk '{print $8" "substr ($9, 1, 1)}')"
+#Download/Upload current month
+dmon="$(vnstat -i eth0 -m | grep "`date +"%b '%y"`" | awk '{print $3" "substr ($4, 1, 1)}')"
+umon="$(vnstat -i eth0 -m | grep "`date +"%b '%y"`" | awk '{print $6" "substr ($7, 1, 1)}')"
+tmon="$(vnstat -i eth0 -m | grep "`date +"%b '%y"`" | awk '{print $9" "substr ($10, 1, 1)}')"
+xlordz="$(awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo)"
+clear
+echo -e "$COLOR1╭══════════════════════════════════════════════════════════╮${NC}"
+echo -e " $COLBG1                ${WH}OTHER MENU / MENU TAMBAHAN                ${NC}"
+echo -e "$COLOR1╰══════════════════════════════════════════════════════════╯${NC}"
+echo ""
+echo -e "$COLOR1╭══════════════════════════════════════════════════════════╮${NC}"
+echo -e "$COLOR1│$NC$r ⇲ $NC$wk Life Bw ${NC}        $Blue➤ $NC $ttoday${NC}B${NC}"                               
+echo -e "$COLOR1│$NC$r ⇲ $NC$wk Subtotal Bw ${NC}    $Blue➤ $NC $tmon${NC}B${NC}"                               
+echo -e "$COLOR1╰══════════════════════════════════════════════════════════╯${NC}"
+echo -e ""
+echo -e "$COLOR1╭══════════════════════════════════════════════════════════╮${NC}"
+echo -e "$COLOR1│$NC  ${y}[01] ${NC}${wk}Running System${NC}"
+echo -e "$COLOR1│$NC  ${y}[02] ${NC}${wk}Menu Backup ${NC}" 
+echo -e "$COLOR1│$NC  ${y}[03] ${NC}${wk}Info Port Service${NC}" 
+echo -e "$COLOR1│$NC  ${y}[04] ${NC}${wk}Info Load Vps ${NC}"
+echo -e "$COLOR1│$NC  ${y}[05] ${NC}${wk}Speedtest ${NC}"                  
+echo -e "$COLOR1│$NC  ${y}[06] ${NC}${wk}Change Domain${NC}"              
+echo -e "$COLOR1│$NC  ${y}[07] ${NC}${wk}Change Banner ${NC}"                   
+echo -e "$COLOR1│$NC  ${y}[08] ${NC}${wk}Restart Service ${NC}"     
+echo -e "$COLOR1│$NC  ${y}[09] ${NC}${wk}Reboot Server${NC}"        
+echo -e "$COLOR1│$NC  ${y}[10] ${NC}${wk}Cert Ssl ${NC}"
+echo -e "$COLOR1│$NC  ${y}[11] ${NC}${wk}Auto Reboot Server${NC}"
+echo -e "$COLOR1│$NC  ${y}[12] ${NC}${wk}Update Script${NC}"                    
+echo -e "$COLOR1│$NC  ${y}[13] ${NC}${wk}Clear All Log ${NC}"
+echo -e "$COLOR1│$NC  ${y}[14] ${NC}${wk}Delete All Akun Exp${NC}"
+echo -e "$COLOR1│$NC  ${y}[15] ${NC}${wk}Cek Bandwith ${NC}"
+echo -e "$COLOR1│$NC  ${y}[16] ${NC}${wk}Menu Bot Panel${NC}"
+echo -e "$COLOR1│$NC  ${y}[17] ${NC}${wk}Install UDP ${NC}"      
+echo -e "$COLOR1│$NC  ${y}[18] ${NC}${wk}Create SlowDns ${NC}"
+echo -e "$COLOR1│$NC  ${y}[19] ${NC}${wk}Streaming Support Cheker${NC}"
+echo -e "$COLOR1│$NC "
+echo -e "$COLOR1│$NC  ${y}[00] ${NC}${wk}Back To Menu ${NC}"
+echo -e "$COLOR1╰══════════════════════════════════════════════════════════╯${NC}"
+echo
+read -p " Select menu : " opt
+echo -e ""
+case $opt in
+1 | 01)
+    run
+    ;;
+
+2 | 02)
+    menu-backup
+    ;;
+    
+3 | 03)
+    prot
+    ;;
+    
+4 | 04)
+    gotop
+    ;;
+    
+5 | 05)
+    speedtest
+    ;;
+    
+6 | 06)
+    addhost
+    ;;
+    
+7 | 07)
+    nano /etc/issue.net
+    ;;
+    
+8 | 08)
+    restart
+    ;;
+    
+9 | 09)
+    reboot
+    ;;
+    
+10 | 10)
+    fixcert
+    ;;
+    
+11 | 11)
+    autoreboot
+    ;;
+    
+12 | 12)
+    upsc
+    ;;
+    
+13 | 13)
+    clearlog
+    ;;
+    
+14 | 14)
+    xp
+    ;;
+    
+15 | 15)
+    bw
+    ;;
+    
+16 | 16)
+    add-bot-panel
+    ;;
+    
+17 | 17)
+    wget --load-cookies /tmp/cookies.txt ${UDPX} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp
+    ;;
+    
+18 | 18)
+    sd
+    ;;
+    
+19 | 19)
+    media
+   ;;
+
+0409 | 0409)
+    menu-ip
+   ;;   
+    
+0)
+   menu
+   ;;
+*)
+    menu
+    ;;
+esac

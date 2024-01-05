@@ -1,0 +1,403 @@
+#!/bin/bash
+# Edition : Stable Edition V2.0
+# Auther  : Rizki Pratama
+# (C) Copyright 2023-2024 By Devils Tunnel
+# =========================================
+#!/bin/bash
+###########- COLOR CODE -##############
+colornow=$(cat /etc/dvs/theme/color.conf)
+NC="\e[0m"
+p="\e[0m"
+r="\033[0;31m"
+y="\033[33m"
+gb="\e[92;1m"
+RED="\033[0;31m"
+COLOR1="$(cat /etc/dvs/theme/$colornow | grep -w "TEXT" | cut -d: -f2|sed 's/ //g')"
+COLBG1="$(cat /etc/dvs/theme/$colornow | grep -w "BG" | cut -d: -f2|sed 's/ //g')"
+WH='\033[1;37m'
+###########- END COLOR CODE -##########
+g=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 2)
+gb=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 3)
+b=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 4)
+p=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 5)
+r=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 6)
+y=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 7)
+###### IZIN SC 
+ipsaya=$(wget -qO- ipinfo.io/ip)
+data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+date_list=$(date +"%Y-%m-%d" -d "$data_server")
+data_ip="https://raw.githubusercontent.com/DevilsTunnels/permission/main/izin"
+checking_sc() {
+  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
+  if [[ $date_list < $useexp ]]; then
+    echo -ne
+  else
+echo -e "${r} ╔═════════════════════════════════════════════════╗${p}"
+echo -e "${r}═║                ${b}PERMISSION DENIED ${p}               ${r}║═${p}"
+echo -e "${r}═║${y}┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┌─┐┬─┐┌─┐┌┬┐┬┬ ┬┌┬┐${p}${r}║═${p}"
+echo -e "${r}═║${y}├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   ├─┘├┬┘├┤ │││││ ││││${p}${r}║═${p}"
+echo -e "${r}═║${y}┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴  ┴└─└─┘┴ ┴┴└─┘┴ ┴${p}${r}║═${p}"
+echo -e "${r}═║${gb}  POWERRED DEVILSTUNNEL | TELEGRAM: @Rizyul04    ${p}${r}║═${p}"
+echo -e "${r} ╚═════════════════════════════════════════════════╝${p}"
+echo -e "                 ${y}INFORMASI LISENSI${p}"                 
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 IP ${r}$ipsaya${p}"
+echo -e "                 ${y}PERIZINAN DITOLAK${p}"
+echo -e "    ${y} SCRIPT TIDAK BISA DI GUNAKAN DI VPS ANDA${p}"
+echo -e "    ${y} SILAHKAN LAKUKAN REGISTRASI TERLEBIH DAHULU${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 ${gb}KONTAK REGISTRASI${p}"
+echo -e "   ${gb}|Telegram: @Rizyul04   | WhatsApp: 085163567549|${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+    exit
+  fi
+}
+checking_sc
+
+red() { echo -e "\033[32;1m${*}\${p}"; }
+IP=$(curl -s ipv4.icanhazip.com)
+HOST="$(cat /etc/xray/domain)"
+DATEVPS=$(date +"%d-%B-%Y")
+ISPVPS=$(cat /etc/xray/isp)
+CITY=$(cat /etc/xray/city)
+last="$(cat /etc/xray/link)"
+lastid="$(cat /etc/xray/token)"
+clear
+function QUESTION() {
+clear
+echo -e ""
+echo -e "${r}WARNING !!!${p}"
+echo -e ""
+echo -e "${b}Save Link Backup For Easy Data Restore${p}"
+sleep 4
+}
+function QUESTION2() {
+clear
+echo -e ""
+echo -e "${r}WARNING !!!${p}"
+echo -e ""
+echo -e "${b}Domain Harus Sama Dengan Data Backup${p}"
+echo -e "${b}Jika Tidak Sama,Vpn Tidak Akan Terhubung${p}"
+echo -e "${b}Domain must be the same as the backup data${p}"
+echo -e "${b}If It's Not the Same, the Vpn Won't Connect${p}"
+echo -e "$COLOR1═══════════════════════════════════════════════${NC}"
+echo -e "1. RESTORE MELALUI TOKEN"
+echo -e "2. RESTORE MELALUI MANUAL LINK"
+read -p "Select From Options [ 1 - 2 ] : " S_MENU
+    case $S_MENU in
+    1)
+        read -p "Input Your TOKEN : " TOKEN
+        Tokenbckp
+        ;;
+    2)
+        read -p "Input Your LINK : " MANUAL
+        Linkman
+        ;;
+    *)
+        echo -e "${Red}You wrong command !${Font}"
+        sleep 5
+        menu
+        ;;
+    esac
+}
+function Tokenbckp() {
+    wget -q --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/u/0/uc?id=${id}&export=download' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=${id}" -O backup.zip && rm -rf /tmp/cookies.txt >/dev/null 2>&1
+}
+function Linkman() {
+    wget -q -O backup.zip --no-check-certificate $MANUAL >/dev/null 2>&1
+}
+function BACKUPVPS() {
+CHATID=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 3)
+KEY=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 2)
+export TIME="10"
+export URL="https://api.telegram.org/bot$KEY/sendMessage"
+clear
+    mkdir -p /root/backup
+    cp -r /etc/xray/config.json backup/ >/dev/null 2>&1
+    cp -r /etc/xray/*.log backup/ >/dev/null 2>&1
+    cp /etc/passwd backup/
+    cp /etc/group backup/
+    cp /etc/shadow backup/
+    cp /etc/gshadow backup/
+    cp -r /var/www/html backup/html
+    cp -r /etc/limit/vmess/ backup/vmess
+    cp -r /etc/limit/vless/ backup/vless
+    cp -r /etc/limit/trojan/ backup/trojan
+    cp -r /etc/limit/shadowsocks/ backup/shadowsocks
+	cp -r /etc/dvs/ backup/limit
+    cp -r /etc/ssh/.ssh.db backup/ssh.db
+    cp -r /etc/vmess/.vmess.db backup/vmess.db
+    cp -r /etc/vless/.vless.db backup/vless.db
+    cp -r /etc/trojan/.trojan.db backup/trojan.db
+    cp -r /etc/shadowsocks/.shadowsocks.db backup/shadowsocks.db
+    cp -r /etc/ssh/ backup/database
+    cp -r /etc/vmess/ backup/database
+    cp -r /etc/vless/ backup/database
+    cp -r /etc/trojan/ backup/database
+    cp -r /etc/ssh/ backup/database
+    cp -r /etc/shadowsocks/ backup/database
+    cp -r /etc/slowdns/server.pub backup/server.pub
+    cp -r /etc/slowdns/server.key backup/server.key
+	zip -r DT-$IP-$MEK.zip backup
+	rclone copy DT-$IP-$MEK.zip dr:backup/
+	url=$(rclone link dr:backup/DT-$IP-$MEK.zip)
+	id=(`echo $url | grep '^https' | cut -d'=' -f2`)
+	LINKBACKUP="https://drive.google.com/u/4/uc?id=${id}&export=download"
+	rm -rf *
+    echo $LINKBACKUP >/etc/xray/link
+	echo $id >/etc/xray/token
+clear
+sleep 2
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗$NC"
+echo -e " $  $COLBG1 ${WH}⇱ SUCCESSFULL BACKUP YOUR VPS⇲${NC} $NC"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝$NC"
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗$NC"
+echo -e " ${b} Your VPS IP${p} : ${g}$IP${p}"
+echo -e " ${b} DOMAIN${p}      : ${g}$HOST${p}"
+echo -e " ${b} DATE${p}        : ${g}$DATEVPS${p}"
+echo -e " ${b} ISP${p}         : ${g}$ISPVPS${p}"
+echo -e " ${b} LOCATION${p}    : ${g}$CITY${p}"
+echo -e " ${b} ID BACKUP${p}   : ${g}$id${p}"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝$NC"
+echo -e "     Please Save The Following Data"
+rm -r backup && rm DT-$IP-$MEK.zip
+CHATID="$CHATID"
+KEY="$KEY"
+TIME="$TIME"
+URL="$URL"
+TEXT="
+<code>◇━━━━━━━━━━━━━━◇</code>
+<b>   ⚠️BACKUP NOTIF⚠️</b>
+<b>     Detail Backup VPS</b>
+<code>◇━━━━━━━━━━━━━━◇</code>
+<b>IP VPS  :</b> <code>${IP} </code>
+<b>DOMAIN :</b> <code>${domain}</code>
+<b>Tanggal : $DATEVPS</b>
+<code>◇━━━━━━━━━━━━━━◇</code>
+<b>ID Backup       :</b> $id
+<code>◇━━━━━━━━━━━━━━◇</code>
+<code>Silahkan copy ID Backup dan restore di VPS baru</code>
+<code>BY : @rizyul04</code>
+"
+curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+echo ""
+read -n 1 -s -r -p "   Press [ Enter ] to back on menu"
+get-backres
+}
+function RESTOREVPS() {
+    unzip backup.zip >/dev/null 2>&1
+    cp /root/backup/passwd /etc/
+    cp /root/backup/group /etc/
+    cp /root/backup/shadow /etc/
+    cp /root/backup/gshadow /etc/
+    cp -r /root/backup/html /var/www/
+    cp -r /var/www/html backup/html
+    cp -r /root/backup/vmess/ /etc/limit/
+    cp -r /root/backup/vless/ /etc/limit/
+    cp -r /root/backup/trojan/ /etc/limit/
+    cp -r /root/backup/shadowsocks/ /etc/limit/
+	cp -r /root/backup/limit/ /etc/dvs/
+    cp -r /root/backup/ssh.db /etc/ssh/.ssh.db
+    cp -r /root/backup/vmess.db /etc/vmess/.vmess.db
+    cp -r /root/backup/vless.db /etc/vless/.vless.db
+    cp -r /root/backup/trojan.db /etc/trojan/.trojan.db
+    cp -r /root/backup/shadowsocks.db /etc/shadowsocks/.shadowsocks.db
+    cp -r /root/backup/database/vmess/ /etc/
+    cp -r /root/backup/database/vless/ /etc/
+    cp -r /root/backup/database/trojan/ /etc/
+    cp -r /root/backup/database/shadowsocks/ /etc/
+    cp -rf /root/backup/database/ssh /etc/
+    cp -r /root/backup/server.pub /etc/slowdns/server.pub
+    cp -r /root/backup/server.key /etc/slowdns/server.key
+    cp -r /root/backup/*.json /etc/xray >/dev/null 2>&1
+    cp -r /root/backup/*.log /etc/xray >/dev/null 2>&1
+    cp /etc/openvpn/*.ovpn /var/www/html/
+    cd
+    systemctl restart xray >/dev/null 2>&1
+    rm -rf *
+    clear
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗$NC"
+echo -e " $  $COLBG1${WH}⇱ SUCCESSFULL RESTORE YOUR VPS⇲${NC} $NC"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝$NC"
+echo -e " ${gb} Your VPS IP${p} : ${b}$IP${p}"
+echo -e " ${gb} DOMAIN${p}      : ${b}$HOST${p}"
+echo -e " ${gb} DATE${p}        : ${b}$DATEVPS${p}"
+echo -e " ${gb} ISP${p}         : ${b}$ISPVPS${p}"
+echo -e " ${gb} LOCATION${p}    : ${b}$CITY${p}"
+echo -e " ${gb} ID RESTORE${p}: ${b}$id${p}"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝$NC"
+echo -e "     ${b}This feature can only be used if the previous data backup uses this script${p}"
+echo -e "     ${b}Please Restart Service${p}"
+sleep 2
+read -n 1 -s -r -p "   Press [ Enter ] to restart service"
+printf "%s
+" "4" | restart
+}
+auto_backup() {
+switch=$(grep -i "switch" /root/.config/.backup | awk '{print $2}')
+if [ "${switch}" == "on" ]; then
+sed -i 's/switch on/switch off/g' /root/.config/.backup
+rm /etc/cron.d/daily_backup
+service cron restart >/dev/null 2>&1
+service cron reload >/dev/null 2>&1
+echo "Turn Off"
+sleep 2
+else
+sed -i 's/switch off/switch on/g' /root/.config/.backup
+cat >/etc/cron.d/daily_backup << EOF
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+55 23 * * * root /etc/shell/set backup
+EOF
+service cron restart >/dev/null 2>&1
+service cron reload >/dev/null 2>&1
+echo "Turn On"
+sleep 2
+fi
+sleep 1
+read -n 1 -s -r -p "   Press [ Enter ] to back on menu"
+get-backres
+}
+switch=$(grep -i "switch" /root/.config/.backup | awk '{print $2}')
+clear
+function backbot() {
+    Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
+    Info="${Green_font_prefix}[ON]${Font_color_suffix}"
+    Error="${Red_font_prefix}[OFF]${Font_color_suffix}"
+    cek=$(grep -c -E "^# Autobackup" /etc/cron.d/autobckp)
+    if [[ "$cek" = "1" ]]; then
+        sts="${Info}"
+    else
+        sts="${Error}"
+    fi
+    clear
+    echo -e "$COLOR1╔══════════════════════════════════════════╗${NC}"
+    echo -e " $COLBG1    ${WH}⇱ Autobackup VPS Server⇲${NC}    $NC" 
+    echo -e "$COLOR1╚══════════════════════════════════════════╝${NC}"
+    echo -e "Status Autobackup : $sts        "
+    echo -e ""
+    echo -e " [${WH}1${NC}] • ${COLOR1}Autobackup After 6 Hour${NC}"
+    echo -e " [${WH}2${NC}] • ${COLOR1}Autobackup After 12 Hour${NC}"
+    echo -e " [${WH}3${NC}] • ${COLOR1}Autobackup After 24 Hour${NC}"
+    echo -e " [${WH}4${NC}] • ${COLOR1}Turn Off Autobackup${NC}"
+    echo ""
+    echo -e "$COLOR1══════════════════════════════════════════${NC}"
+    echo -e ""
+    until [[ $Autobackup =~ ^[1-4]+$ ]]; do
+        read -p "Select From Options [1-4 or x] :  " Autobackup
+    done
+    case $Autobackup in
+    1)
+        echo -e ""
+        sleep 1
+        clear
+        echo >/etc/cron.d/autobckp
+        echo "# Autobackup" >/etc/cron.d/autobckp
+        echo "0 */6 * * *  root /usr/bin/autobckp" >>/etc/cron.d/autobckp
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        echo -e ""
+        echo -e "      Autobackup Every     : 6 Hour"
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        service cron restart >/dev/null 2>&1
+        service cron reload >/dev/null 2>&1
+        ;;
+    2)
+        echo -e ""
+        sleep 1
+        clear
+        echo >/etc/cron.d/autobckp
+        echo "# Autobackup" >/etc/cron.d/autobckp
+        echo "0 */12 * * *  root /usr/bin/autobckp" >>/etc/cron.d/autobckp
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        echo -e ""
+        echo -e "      Autobackup Every     : 12 Hour"
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        service cron restart >/dev/null 2>&1
+        service cron reload >/dev/null 2>&1
+        ;;
+    3)
+        echo -e ""
+        sleep 1
+        clear
+        echo >/etc/cron.d/autobckp
+        echo "# Autobackup" >/etc/cron.d/autobckp
+        echo "0 */24 * * *  root /usr/bin/autobckp" >>/etc/cron.d/autobckp
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        echo -e ""
+        echo -e "      Autobackup Every     : 24 Hour"
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        service cron restart >/dev/null 2>&1
+        service cron reload >/dev/null 2>&1
+        ;;
+    4)
+        clear
+        rm /etc/cron.d/autobckp
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        echo -e ""
+        echo -e "      Autobackup Turned Off  "
+        echo -e ""
+        echo -e "$COLOR1══════════════════════════════════════════${NC}"
+        service cron restart >/dev/null 2>&1
+        service cron reload >/dev/null 2>&1
+        ;;
+    *)
+        menu
+        ;;
+    esac
+
+}
+if [ "${switch}" == "on" ]; then
+sts="${b}[ON]${p}"
+else
+sts="${r}[OFF]${p}"
+fi
+clear
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗${NC}"
+echo -e "    $COLBG1       ${WH}⇱ BACKUP & RESTORE⇲${NC}      $NC"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝${NC}"
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗${NC}"
+echo -e " $COLOR1 $NC ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}Backup Data VPS ${NC}"
+echo -e " $COLOR1 $NC ${WH}[${COLOR1}02${WH}]${NC} ${COLOR1}• ${WH}AutoBackup Data VPS ${NC}"
+echo -e " $COLOR1 $NC ${WH}[${COLOR1}03${WH}]${NC} ${COLOR1}• ${WH}AutoBackup Data VPS After 6 Hour ${NC}"
+echo -e " $COLOR1 $NC ${WH}[${COLOR1}04${WH}]${NC} ${COLOR1}• ${WH}Restore Data VPS ${NC}"
+echo -e "   ${gb}${p}"
+echo -e " $COLOR1 $NC ${WH}[${COLOR1}01${WH}]${NC} ${COLOR1}• ${WH}Back To Home Menu${NC}"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝${NC}"
+echo -e " ${COLOR1}╔══════════════════════════════════════════╗${NC}"
+echo -e " ${WH}  AUTO BACKUP   {NC}: $sts"
+echo -e " ${WH}  LAST BACKUP ID{NC}: $lastid"
+echo -e " ${COLOR1}╚══════════════════════════════════════════╝${NC}"
+echo -e ""
+read -p "   Select From Options [ 1 - 3 ] : " OPT_MENU
+echo -e ""
+case $OPT_MENU in
+1)
+QUESTION
+BACKUPVPS
+;;
+2)
+auto_backup
+;;
+3)
+backbot
+;;
+4)
+QUESTION2
+RESTOREVPS
+;;
+x)
+menu
+;;
+*)
+echo -e "${Red}You wrong command !${Font}"
+sleep 1
+menu
+;;
+esac

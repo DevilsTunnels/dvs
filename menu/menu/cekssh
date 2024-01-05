@@ -1,0 +1,118 @@
+#!/bin/bash
+###########- COLOR CODE -##############
+colornow=$(cat /etc/dvs/theme/color.conf)
+NC="\e[0m"
+p="\e[0m"
+r="\033[0;31m"
+y="\033[33m"
+gb="\e[92;1m"
+RED="\033[0;31m"
+grenbo="\e[92;1m"
+GRENN="\e[92;1m"
+WC='\033[0m'
+COLOR1="$(cat /etc/dvs/theme/$colornow | grep -w "TEXT" | cut -d: -f2|sed 's/ //g')"
+COLBG1="$(cat /etc/dvs/theme/$colornow | grep -w "BG" | cut -d: -f2|sed 's/ //g')"
+WH='\033[1;37m'
+###########- END COLOR CODE -##########
+KIRI="\033[1;32m>\033[1;33m>\033[1;31m>\033[1;31m$NC"
+g=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 2)
+gb=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 3)
+b=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 4)
+p=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 5)
+r=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 6)
+y=$(cat /usr/sbin/mtsc.list | grep "^color" | cut -d " " -f 7)
+###### IZIN SC 
+ipsaya=$(wget -qO- ipinfo.io/ip)
+data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+date_list=$(date +"%Y-%m-%d" -d "$data_server")
+data_ip="https://raw.githubusercontent.com/DevilsTunnels/permission/main/izin"
+checking_sc() {
+  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
+  if [[ $date_list < $useexp ]]; then
+    echo -ne
+  else
+echo -e "${r} ╔═════════════════════════════════════════════════╗${p}"
+echo -e "${r}═║                ${b}PERMISSION DENIED ${p}               ${r}║═${p}"
+echo -e "${r}═║${y}┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┌─┐┬─┐┌─┐┌┬┐┬┬ ┬┌┬┐${p}${r}║═${p}"
+echo -e "${r}═║${y}├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   ├─┘├┬┘├┤ │││││ ││││${p}${r}║═${p}"
+echo -e "${r}═║${y}┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴  ┴└─└─┘┴ ┴┴└─┘┴ ┴${p}${r}║═${p}"
+echo -e "${r}═║${gb}  POWERRED DEVILSTUNNEL | TELEGRAM: @Rizyul04    ${p}${r}║═${p}"
+echo -e "${r} ╚═════════════════════════════════════════════════╝${p}"
+echo -e "                 ${y}INFORMASI LISENSI${p}"                 
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 IP ${r}$ipsaya${p}"
+echo -e "                 ${y}PERIZINAN DITOLAK${p}"
+echo -e "    ${y} SCRIPT TIDAK BISA DI GUNAKAN DI VPS ANDA${p}"
+echo -e "    ${y} SILAHKAN LAKUKAN REGISTRASI TERLEBIH DAHULU${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+echo -e "                 ${gb}KONTAK REGISTRASI${p}"
+echo -e "   ${gb}|Telegram: @Rizyul04   | WhatsApp: 085163567549|${p}"
+echo -e "${r}═════════════════════════════════════════════════════${p}"
+    exit
+  fi
+}
+checking_sc
+clear
+
+if [ -e "/var/log/auth.log" ]; then
+        LOG="/var/log/auth.log";
+fi
+if [ -e "/var/log/secure" ]; then
+        LOG="/var/log/secure";
+fi
+                
+data=( `ps aux | grep -i dropbear | awk '{print $2}'`);
+echo -e "$COLOR1╔══════════════════════════════════════════╗$NC"
+echo "     ID   |   Username   |  IP Address";
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+cat $LOG | grep -i dropbear | grep -i "Password auth succeeded" > /tmp/login-db.txt;
+for PID in "${data[@]}"
+do
+            cat /tmp/login-db.txt | grep "dropbear\[$PID\]" > /tmp/login-db-pid.txt;
+            NUM=`cat /tmp/login-db-pid.txt | wc -l`;
+            USER=`cat /tmp/login-db-pid.txt | awk '{print $10}'`;
+            IP=`cat /tmp/login-db-pid.txt | awk '{print $12}'`;
+            if [ $NUM -eq 1 ]; then
+                    echo "$PID - $USER - $IP";
+                    fi
+done
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+echo " "
+echo -e "$COLOR1╔══════════════════════════════════════════╗$NC"
+echo "     ID   |   Username   |  IP Address";
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+cat $LOG | grep -i sshd | grep -i "Accepted password for" > /tmp/login-db.txt
+data=( `ps aux | grep "\[priv\]" | sort -k 72 | awk '{print $2}'`);
+
+for PID in "${data[@]}"
+do
+            cat /tmp/login-db.txt | grep "sshd\[$PID\]" > /tmp/login-db-pid.txt;
+            NUM=`cat /tmp/login-db-pid.txt | wc -l`;
+            USER=`cat /tmp/login-db-pid.txt | awk '{print $9}'`;
+            IP=`cat /tmp/login-db-pid.txt | awk '{print $11}'`;
+            if [ $NUM -eq 1 ]; then
+                    echo "$PID - $USER - $IP";
+        fi
+done
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+if [ -f "/etc/openvpn/server/openvpn-tcp.log" ]; then
+echo ""
+echo -e "$COLOR1╔══════════════════════════════════════════╗$NC"
+echo "    Username  |  IP Address  |  Connected";
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+            cat /etc/openvpn/server/openvpn-tcp.log | grep -w "^CLIENT_LIST" | cut -d ',' -f 2,3,8 | sed -e 's/,/      /g' > /tmp/vpn-login-tcp.txt
+            cat /tmp/vpn-login-tcp.txt
+fi
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+
+if [ -f "/etc/openvpn/server/openvpn-udp.log" ]; then
+echo " "
+echo -e "$COLOR1╔══════════════════════════════════════════╗$NC"
+echo "    Username  |  IP Address  |  Connected";
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+            cat /etc/openvpn/server/openvpn-udp.log | grep -w "^CLIENT_LIST" | cut -d ',' -f 2,3,8 | sed -e 's/,/      /g' > /tmp/vpn-login-udp.txt
+            cat /tmp/vpn-login-udp.txt
+fi
+echo -e "$COLOR1╚══════════════════════════════════════════╝$NC"
+echo "";
+

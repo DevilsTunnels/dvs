@@ -1,0 +1,42 @@
+#!/bin/bash
+###########- COLOR CODE -##############
+colornow=$(cat /etc/dvs/theme/color.conf)
+NC="\e[0m"
+RED="\033[0;31m"
+COLOR1="$(cat /etc/dvs/theme/$colornow | grep -w "TEXT" | cut -d: -f2|sed 's/ //g')"
+COLBG1="$(cat /etc/dvs/theme/$colornow | grep -w "BG" | cut -d: -f2|sed 's/ //g')"
+WH='\033[1;37m'
+###########- END COLOR CODE -##########
+clear
+echo -e "$COLOR1╔══════════════════════════════════════════╗${NC}"
+echo -e " $COLBG1            ${WH}⇱ PORT SERVISCE ⇲             ${NC}"
+echo -e "$COLOR1╚══════════════════════════════════════════╝${NC}"
+echo -e "$COLOR1╔══════════════════════════════════════════╗${NC}"
+echo -e "$COLOR1║    >>> Service & Port                    ║${NC}"
+echo -e "$COLOR1║- Open SSH                : 443, 80, 22   ║${NC}"
+echo -e "$COLOR1║- Dropbear                : 443, 109, 143 ║${NC}"
+echo -e "$COLOR1║- Dropbear Websocket      : 443, 109      ║${NC}"
+echo -e "$COLOR1║- SSH Websocket SSL       : 443           ║${NC}"
+echo -e "$COLOR1║- SSH Websocket           : 80            ║${NC}"
+echo -e "$COLOR1║- OpenVPN SSL             : 443           ║${NC}"
+echo -e "$COLOR1║- OpenVPN Websocket SSL   : 443           ║${NC}"
+echo -e "$COLOR1║- OpenVPN TCP             : 443, 1194     ║${NC}"
+echo -e "$COLOR1║- OpenVPN UDP             : 2200          ║${NC}"
+echo -e "$COLOR1║- Nginx Webserver         : 443, 80, 81   ║${NC}"
+echo -e "$COLOR1║- Haproxy Loadbalancer    : 443, 80       ║${NC}"
+echo -e "$COLOR1║- XRAY Vmess TLS          : 443           ║${NC}"
+echo -e "$COLOR1║- XRAY Vmess gRPC         : 443           ║${NC}"
+echo -e "$COLOR1║- XRAY Vmess None TLS     : 80            ║${NC}"
+echo -e "$COLOR1║- XRAY Vless TLS          : 443           ║${NC}"
+echo -e "$COLOR1║- XRAY Vless gRPC         : 443           ║${NC}"
+echo -e "$COLOR1║- XRAY Vless None TLS     : 80            ║${NC}"
+echo -e "$COLOR1║- Trojan gRPC             : 443           ║${NC}"
+echo -e "$COLOR1║- Trojan WS               : 443           ║${NC}"
+echo -e "$COLOR1║- Shadowsocks WS          : 443           ║${NC}"
+echo -e "$COLOR1║- BadVPN 1                : 7100          ║${NC}"
+echo -e "$COLOR1║- BadVPN 2                : 7200          ║${NC}"
+echo -e "$COLOR1║- BadVPN 3                : 7300          ║${NC}"
+echo -e "$COLOR1╚══════════════════════════════════════════╝${NC}"
+echo ""
+read -n 1 -s -r -p "Press any key to back on menu"
+menu
