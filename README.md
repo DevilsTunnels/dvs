@@ -2,4 +2,4 @@
 
 
 ```
-wget --no-check-certificate https://raw.githubusercontent.com/claudialubowitz26/scvps/main/ub2.sh && chmod +x ub2.sh && ./ub2.sh
+wget --no-check-certificate https://raw.githubusercontent.com/DevilsTunnels/dvs/main/dvs.sh && chmod +x dvs.sh && ./dvs.sh
